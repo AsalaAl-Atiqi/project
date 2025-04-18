@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة تبادل الكتب الجامعية</title>
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      position: relative;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    .book {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background-color: #fafafa;
+    }
+    .book img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 5px;
+    }
+    .footer-note {
+      text-align: left;
+      font-size: 1.1rem;
+      color: #333;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%A7%D9%84%D9%85%D8%A4%D8%B3%D8%B3%D8%A9_%D8%A7%D9%84%D8%B9%D8%A7%D9%85%D8%A9_%D9%84%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8_%D8%A7%D9%84%D9%85%D9%87%D9%86%D9%8A_%D9%88%D8%A7%D9%84%D8%AA%D9%82%D9%86%D9%8A_%28%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%29.jpg" alt="شعار الكلية التقنية" class="logo" />
+    <h1>منصة تبادل الكتب الجامعية</h1>
+
+    <div class="footer-note">مشروع المتدربة: اصاله العتيقي</div>
+
+    <div id="login-section">
+      <h2>تسجيل الدخول</h2>
+      <input type="text" id="student-name" placeholder="اسم الطالب" />
+      <input type="text" id="student-id" placeholder="الرقم الأكاديمي" />
+      <button onclick="login()">دخول</button>
+    </div>
+
+    <div id="book-form" style="display: none;">
+      <h2>إضافة كتاب</h2>
+      <input type="text" id="book-title" placeholder="اسم الكتاب" />
+      <input type="number" id="book-price" placeholder="السعر" />
+      <input type="file" id="book-image" accept="image/*" />
+      <button onclick="addBook()">نشر الكتاب</button>
+
+      <div class="footer-note">مشروع المتدربة: اصاله العتيقي</div>
+    </div>
+
+    <div id="books-list"></div>
+  </div>
+
+  <script>
+    function login() {
+      const name = document.getElementById('student-name').value;
+      const id = document.getElementById('student-id').value;
+
+      if (!name || !id) {
+        alert("يرجى إدخال اسم الطالب والرقم الأكاديمي");
+        return;
+      }
+
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('book-form').style.display = 'block';
+    }
+
+    function addBook() {
+      const title = document.getElementById('book-title').value;
+      const price = document.getElementById('book-price').value;
+      const imageInput = document.getElementById('book-image');
+      const imageFile = imageInput.files[0];
+
+      if (!title || !price || !imageFile) {
+        alert("يرجى تعبئة جميع الحقول");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imageUrl = e.target.result;
+        const bookHTML = `
+          <div class="book">
+            <img src="${imageUrl}" alt="${title}" />
+            <h3>${title}</h3>
+            <p>السعر: ${price} ريال</p>
+            <p class="note">ملاحظة: استلام الكتب بالمكان المخصص له في حرم الكلية</p>
+          </div>
+        `;
+        document.getElementById('books-list').innerHTML += bookHTML;
+      };
+      reader.readAsDataURL(imageFile);
+    }
+  </script>
+</body>
+</html>
